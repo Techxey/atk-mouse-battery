@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+
+      - name: Build
+        shell: msys2 {0}
+        run: |
+          mkdir -p dist
+          gcc -O2 -s -mwindows -std=gnu99 -DUNICODE -D_UNICODE -finput-charset=UTF-8 \
+            -o dist/MouseBattery.exe src/main.c \
+            -lsetupapi -lhid -lshell32 -lgdi32 -luser32 -ladvapi32
+          ls -l dist
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MouseBattery-windows-x64
+          path: dist/MouseBattery.exe
+          if-no-files-found: error

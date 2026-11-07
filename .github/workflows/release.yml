@@ -1,0 +1,36 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+
+      - name: Build
+        shell: msys2 {0}
+        run: |
+          mkdir -p dist
+          gcc -O2 -s -mwindows -std=gnu99 -DUNICODE -D_UNICODE -finput-charset=UTF-8 \
+            -o dist/MouseBattery.exe src/main.c \
+            -lsetupapi -lhid -lshell32 -lgdi32 -luser32 -ladvapi32
+          ls -l dist
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/MouseBattery.exe
+          generate_release_notes: true
