@@ -1,5 +1,9 @@
 # ATK 鼠标电量托盘工具
 
+[![build](https://github.com/Techxey/atk-mouse-battery/actions/workflows/build.yml/badge.svg)](https://github.com/Techxey/atk-mouse-battery/actions/workflows/build.yml)
+[![release](https://img.shields.io/github/v/release/Techxey/atk-mouse-battery)](https://github.com/Techxey/atk-mouse-battery/releases)
+[![license](https://img.shields.io/github/license/Techxey/atk-mouse-battery)](LICENSE)
+
 一个 **32 KB、单文件、零运行时依赖** 的 Windows 托盘小工具：不用再打开网页驱动，鼠标悬停托盘图标就能看到
 2.4G 鼠标的**电量百分比、电压和连接状态**。
 
